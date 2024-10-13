@@ -6,6 +6,27 @@
 mod tests {
     use super::*;
 
+    struct DropBomb {
+        defused: bool,
+    }
+
+    impl DropBomb {
+        fn new() -> Self {
+            DropBomb { defused: false }
+        }
+        fn defuse(&mut self) {
+            self.defused = true;
+        }
+    }
+
+    impl Drop for DropBomb {
+        fn drop(&mut self) {
+            if !self.defused {
+                panic!()
+            }
+        }
+    }
+
     #[test]
     #[should_panic]
     fn test_drop_bomb() {
