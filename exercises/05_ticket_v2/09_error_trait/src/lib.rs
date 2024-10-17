@@ -3,17 +3,36 @@
 //  The docs for the `std::fmt` module are a good place to start and look for examples:
 //  https://doc.rust-lang.org/std/fmt/index.html#write
 
+use std::{error::Error, fmt::Display};
+
+
+#[derive(Debug)]
 enum TicketNewError {
     TitleError(String),
     DescriptionError(String),
 }
+
+impl Display for TicketNewError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            TicketNewError::TitleError(message) => write!(f, "{}", message),
+            Self::DescriptionError(message) => write!(f, "{}", message)
+        }
+    }
+}
+
+impl Error for TicketNewError{}
 
 // TODO: `easy_ticket` should panic when the title is invalid, using the error message
 //   stored inside the relevant variant of the `TicketNewError` enum.
 //   When the description is invalid, instead, it should use a default description:
 //   "Description not provided".
 fn easy_ticket(title: String, description: String, status: Status) -> Ticket {
-    todo!()
+    match Ticket::new(title.clone(), description.clone(), status.clone()) {
+        Ok(ticket) => return ticket,
+        Err(TicketNewError::TitleError(message)) => panic!("{}", message),
+        Err(TicketNewError::DescriptionError(_message)) => Ticket::new(title, "Description not provided".into(), status).unwrap()
+    }
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -74,6 +93,7 @@ mod tests {
     #[test]
     #[should_panic(expected = "Title cannot be empty")]
     fn title_cannot_be_empty() {
+        println!("{}", Ticket::new(valid_title(), overly_long_description(), Status::ToDo).unwrap_err());
         easy_ticket("".into(), valid_description(), Status::ToDo);
     }
 
