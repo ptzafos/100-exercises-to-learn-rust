@@ -1,3 +1,6 @@
+use std::ops::Deref;
+
+
 // Given a number `n`, return the `n+1`th number in the Fibonacci sequence.
 //
 // The Fibonacci sequence is defined as follows:
@@ -11,11 +14,23 @@
 // We expect `fibonacci(0)` to return `0`, `fibonacci(1)` to return `1`,
 // `fibonacci(2)` to return `1`, and so on.
 pub fn fibonacci(n: u32) -> u32 {
+    let mut result: Vec<u32> = Vec::new();
+    result.push(0);
+    result.push(1);
+    result.push(1);
+    if n <= 2 {
+        return *result.get(n as usize).unwrap();
+    }
+    for i in 3..n {
+        result.push(result.get(i as usize -1).unwrap() + result.get(i as usize -2).unwrap());
+        println!("{:?}",result);
+    }
+    return result[result.len() - 1] + result[result.len() - 2];
+
     // TODO: implement the `fibonacci` function
     //
     // Hint: use a `Vec` to memoize the results you have already calculated
     // so that you don't have to recalculate them several times.
-    todo!()
 }
 
 #[cfg(test)]
