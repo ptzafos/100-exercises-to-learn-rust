@@ -37,7 +37,6 @@ impl TicketStore {
         .iter()
         .filter(|&ticket| ticket.status == Status::ToDo)
         .collect::<Vec<&Ticket>>()
-
     }
 }
 

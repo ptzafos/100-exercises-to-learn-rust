@@ -1,6 +1,22 @@
 // TODO: Define a function named `sum` that takes a reference to a slice of `u32` and returns the sum of all
 //  elements in the slice.
 
+// fn sum(slice: &[u32]) -> u32 {
+//     slice.iter().sum()
+// }
+// pub fn sum(slice: &[u32]) -> u32 {
+//     slice.iter().copied().reduce(|acc, curr| acc + curr).unwrap_or(0)
+// }
+
+// pub fn sum(slice: &[u32]) -> u32 {
+//     slice.iter().reduce(|&acc, &curr| acc + curr).unwrap_or(0)
+// }
+
+pub fn sum(slice: &[u32]) -> u32 {
+    slice.iter().fold(0, |acc, &curr| acc + curr)
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
